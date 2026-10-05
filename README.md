@@ -50,7 +50,17 @@ Open (or drag in) any video and watch it normally, with all the screen modes.
 
 You need a computer with Windows, macOS or Linux, and an internet connection for the first start.
 
-### Windows
+### Windows, the easy way (nothing to install)
+
+1. Go to the [latest release](https://github.com/Tomasz-programista/Tomo/releases/latest)
+   and download **TomoTV-windows.zip**.
+2. Unzip it (right-click → *Extract All…*), open the `TomoTV` folder and double-click **TomoTV.exe**.
+
+If Windows says "Windows protected your PC", click **More info**, then **Run anyway**
+(the app isn't signed with a paid certificate). The zip is rebuilt automatically every time the
+code changes; your channels are saved in your user folder, so you can swap in a new version any time.
+
+### Windows, from the source code
 
 1. Install **Python 3.14** from <https://www.python.org/downloads/windows/>
    (the "Windows installer (64-bit)"). In the installer, tick **"Add python.exe to PATH"**.
@@ -128,6 +138,10 @@ python -m unittest discover -s tests -t .      # schedule, 70% rule, folder scan
 - `qml/` is the interface. `qml/screen/` has the screen emulator and device frames.
 - `shaders/src/` holds the screen effects. After editing one, run `python tools/build_shaders.py`.
 - `tools/make_assets.py` regenerates the icon PNGs and the chiptune UI sounds.
+- `packaging/tomotv.spec` is the PyInstaller recipe for the Windows app
+  (`pip install pyinstaller` then `pyinstaller packaging/tomotv.spec`). GitHub Actions builds it in
+  `.github/workflows/build-windows.yml`, checks it with `TomoTV --smoke-test tests/data/sample.mkv`
+  (starts, plays the clip, checks subtitles, exits 0 if all is well) and publishes the release.
 - For testing, `TOMOTV_TIME_OFFSET_DAYS=7` pretends a week has passed. Use it together with
   `TOMOTV_DATA_DIR=some/test/folder`, because time travel sticks: aired episodes stay aired.
 

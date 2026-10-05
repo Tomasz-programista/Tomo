@@ -1,0 +1,84 @@
+name: Build Windows app
+
+# Builds TomoTV.exe (no Python needed), checks that it really starts and plays a video,
+# and on the default branch publishes it as a GitHub release download.
+
+on:
+  push:
+    paths:
+      - "tomotv/**"
+      - "qml/**"
+      - "assets/**"
+      - "shaders/**"
+      - "packaging/**"
+      - "tests/**"
+      - "tomotv.py"
+      - "requirements.txt"
+      - ".github/workflows/build-windows.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: windows-build-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: windows-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt pyinstaller
+
+      - name: Unit tests
+        run: python -m unittest discover -s tests -t .
+
+      - name: Build TomoTV.exe
+        run: pyinstaller packaging/tomotv.spec --noconfirm
+
+      - name: Smoke test the built app
+        shell: pwsh
+        timeout-minutes: 5
+        run: |
+          $env:TOMOTV_DATA_DIR = Join-Path $env:RUNNER_TEMP "tomotv-smoke"
+          $app = Start-Process -FilePath "dist\TomoTV\TomoTV.exe" -ArgumentList "--smoke-test", "tests\data\sample.mkv" -Wait -PassThru
+          Get-Content (Join-Path $env:TOMOTV_DATA_DIR "smoke-test.txt") -ErrorAction SilentlyContinue
+          if ($app.ExitCode -ne 0) {
+            Write-Host "Smoke test failed with exit code $($app.ExitCode). App log:"
+            Get-Content (Join-Path $env:TOMOTV_DATA_DIR "tomotv.log") -ErrorAction SilentlyContinue
+            exit 1
+          }
+
+      - name: Package
+        shell: pwsh
+        run: |
+          Copy-Item packaging\README-windows.txt "dist\TomoTV\HOW TO START.txt"
+          Compress-Archive -Path dist\TomoTV -DestinationPath TomoTV-windows.zip
+          "{0:N0} MB" -f ((Get-Item TomoTV-windows.zip).Length / 1MB)
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: TomoTV-windows
+          path: TomoTV-windows.zip
+
+      - name: Publish release
+        if: github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          VERSION=$(python -c "import tomotv; print(tomotv.__version__)")
+          TAG="v$VERSION"
+          gh release delete "$TAG" --cleanup-tag --yes || true
+          gh release create "$TAG" TomoTV-windows.zip --target "$GITHUB_SHA" \
+            --title "TOMO-TV $VERSION for Windows" --notes-file packaging/release-notes.md --latest

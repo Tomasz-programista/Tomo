@@ -43,6 +43,15 @@ def images() -> None:
 
     app = QGuiApplication.instance() or QGuiApplication(sys.argv[:1])  # noqa: F841
     render_svg("mascot.svg", "icon.png", 256)
+    try:  # Windows icon with several sizes (needs Pillow, only used for the .exe build)
+        from PIL import Image
+
+        Image.open(os.path.join(IMG, "icon.png")).save(
+            os.path.join(ROOT, "packaging", "tomotv.ico"), sizes=[(16, 16), (24, 24), (32, 32), (48, 48), (64, 64), (128, 128), (256, 256)]
+        )
+        print("wrote tomotv.ico")
+    except ImportError:
+        print("Pillow not installed, skipped packaging/tomotv.ico")
     render_svg("star.svg", "star.png", 32)
     render_svg("heart.svg", "heart.png", 32)
 
