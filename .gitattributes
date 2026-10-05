@@ -1,0 +1,9 @@
+# Windows batch files must keep CRLF line endings, shell scripts LF.
+*.bat -text
+*.sh text eol=lf
+*.command text eol=lf
+*.qsb binary
+*.ttf binary
+*.otf binary
+*.wav binary
+*.png binary

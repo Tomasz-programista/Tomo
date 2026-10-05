@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 220" width="200" height="220">
+  <!-- Tomo-chan, the TOMO-TV mascot: a little CRT television with cat ears -->
+  <defs>
+    <linearGradient id="body" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFD3EA"/>
+      <stop offset="0.55" stop-color="#FFA8D2"/>
+      <stop offset="1" stop-color="#FF86C0"/>
+    </linearGradient>
+    <linearGradient id="screen" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#E4FBFF"/>
+      <stop offset="1" stop-color="#93E2FF"/>
+    </linearGradient>
+    <linearGradient id="ear" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFC4E2"/>
+      <stop offset="1" stop-color="#FF9ACB"/>
+    </linearGradient>
+  </defs>
+
+  <!-- antenna -->
+  <line x1="100" y1="50" x2="100" y2="20" stroke="#2B2350" stroke-width="5" stroke-linecap="round"/>
+  <polygon points="100,2 105,14 118,15 108,23 111,36 100,29 89,36 92,23 82,15 95,14"
+           fill="#FFE94A" stroke="#2B2350" stroke-width="3.5" stroke-linejoin="round"/>
+
+  <!-- cat ears -->
+  <path d="M30,74 L42,24 L80,52 Z" fill="url(#ear)" stroke="#2B2350" stroke-width="5" stroke-linejoin="round"/>
+  <path d="M42,62 L47,38 L66,52 Z" fill="#FFF0F8"/>
+  <path d="M170,74 L158,24 L120,52 Z" fill="url(#ear)" stroke="#2B2350" stroke-width="5" stroke-linejoin="round"/>
+  <path d="M158,62 L153,38 L134,52 Z" fill="#FFF0F8"/>
+
+  <!-- feet -->
+  <rect x="52" y="176" width="26" height="26" rx="10" fill="#FF86C0" stroke="#2B2350" stroke-width="5"/>
+  <rect x="122" y="176" width="26" height="26" rx="10" fill="#FF86C0" stroke="#2B2350" stroke-width="5"/>
+
+  <!-- body -->
+  <rect x="16" y="46" width="168" height="140" rx="36" fill="url(#body)" stroke="#2B2350" stroke-width="5"/>
+  <path d="M38,58 Q100,46 162,58" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round" fill="none" opacity="0.8"/>
+
+  <!-- screen -->
+  <rect x="36" y="66" width="128" height="92" rx="24" fill="url(#screen)" stroke="#2B2350" stroke-width="5"/>
+  <path d="M50,78 L84,78 L58,104 L46,104 Z" fill="#FFFFFF" opacity="0.55"/>
+
+  <!-- face -->
+  <ellipse cx="78" cy="110" rx="9.5" ry="13" fill="#2B2350"/>
+  <ellipse cx="122" cy="110" rx="9.5" ry="13" fill="#2B2350"/>
+  <circle cx="81.5" cy="104" r="4" fill="#FFFFFF"/>
+  <circle cx="125.5" cy="104" r="4" fill="#FFFFFF"/>
+  <circle cx="75" cy="115" r="2" fill="#FFFFFF"/>
+  <circle cx="119" cy="115" r="2" fill="#FFFFFF"/>
+  <ellipse cx="60" cy="130" rx="10" ry="5.5" fill="#FF6FB1" opacity="0.75"/>
+  <ellipse cx="140" cy="130" rx="10" ry="5.5" fill="#FF6FB1" opacity="0.75"/>
+  <path d="M90,126 Q95,134 100,126 Q105,134 110,126" stroke="#2B2350" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- knobs and speaker -->
+  <circle cx="54" cy="171" r="6" fill="#FFE94A" stroke="#2B2350" stroke-width="3.5"/>
+  <circle cx="74" cy="171" r="6" fill="#7FE6FF" stroke="#2B2350" stroke-width="3.5"/>
+  <line x1="112" y1="166" x2="146" y2="166" stroke="#2B2350" stroke-width="3" stroke-linecap="round"/>
+  <line x1="112" y1="172" x2="146" y2="172" stroke="#2B2350" stroke-width="3" stroke-linecap="round"/>
+  <line x1="112" y1="178" x2="138" y2="178" stroke="#2B2350" stroke-width="3" stroke-linecap="round"/>
+</svg>
