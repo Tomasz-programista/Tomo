@@ -125,8 +125,8 @@ Item {
     Connections {
         target: backend
         function onProbeDone(result) {
-            if (!page.scan)
-                return
+            if (!page.scan || result.path.indexOf(page.scan.folder) !== 0)
+                return  // a late answer about a folder that's no longer picked
             page.probing = false
             page.probe = result
             page.defaultTracks()

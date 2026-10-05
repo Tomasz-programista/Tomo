@@ -317,34 +317,21 @@ Item {
 
     Menu {
         id: menu
-        MenuItem { text: "Rename…"; onTriggered: renameDialog.open() }
-        MenuItem { text: "Change folder…"; onTriggered: folderDialog.open() }
-        MenuItem { text: "Open folder"; onTriggered: backend.openChannelFolder(card.channel.id) }
-        MenuSeparator {}
-        MenuItem { text: "Restart broadcast from episode 1"; onTriggered: restartDialog.open() }
-        MenuItem { text: "Delete channel"; onTriggered: deleteDialog.open() }
+        padding: 4
+        RetroMenuItem { text: "Rename…"; onTriggered: renameDialog.open() }
+        RetroMenuItem { text: "Change folder…"; onTriggered: folderDialog.open() }
+        RetroMenuItem { text: "Open folder"; onTriggered: backend.openChannelFolder(card.channel.id) }
+        MenuSeparator {
+            contentItem: Rectangle { implicitHeight: 2; color: "#D9D2F0" }
+        }
+        RetroMenuItem { text: "Restart from episode 1"; onTriggered: restartDialog.open() }
+        RetroMenuItem { text: "Delete channel"; danger: true; onTriggered: deleteDialog.open() }
         background: Rectangle {
-            implicitWidth: 260
+            implicitWidth: 270
             color: "white"
             border.width: 3
             border.color: Theme.ink
             radius: 8
-        }
-        delegate: MenuItem {
-            id: menuItem
-            implicitHeight: 34
-            contentItem: Text {
-                leftPadding: 10
-                text: menuItem.text
-                font.family: Theme.pixel
-                font.pixelSize: 14
-                color: Theme.ink
-                verticalAlignment: Text.AlignVCenter
-            }
-            background: Rectangle {
-                color: menuItem.highlighted ? Theme.babyPink : "transparent"
-                radius: 5
-            }
         }
     }
 

@@ -326,7 +326,7 @@ Item {
     Timer {
         id: hideTimer
         interval: 2600
-        onTriggered: if (player.playing) player.controlsShown = false
+        onTriggered: if (player.playing && !controlsHover.hovered) player.controlsShown = false
     }
 
     Timer {
@@ -393,12 +393,18 @@ Item {
 
     // ------------------------------------------------------------ layout
 
-    MouseArea {
-        anchors.fill: parent
-        hoverEnabled: true
-        acceptedButtons: Qt.NoButton
+    // Show the controls when the mouse really moves. (Qt also sends hover updates every frame
+    // while the video plays, so compare positions.)
+    property point lastMouse: Qt.point(-1, -1)
+    HoverHandler {
         cursorShape: player.controlsShown || !player.fullscreen ? Qt.ArrowCursor : Qt.BlankCursor
-        onPositionChanged: player.poke()
+        onPointChanged: {
+            var p = point.position
+            if (Math.abs(p.x - player.lastMouse.x) + Math.abs(p.y - player.lastMouse.y) > 2) {
+                player.lastMouse = p
+                player.poke()
+            }
+        }
     }
 
     // top bar
@@ -616,10 +622,10 @@ Item {
                 }
             }
 
-            // tape counter in VHS mode
+            // tape counter in VHS mode (under the PLAY/PAUSE status, clear of the subtitles)
             Text {
                 visible: player.mode.id === "vhs"
-                anchors { right: parent.right; bottom: parent.bottom; margins: osd.u * 5 }
+                anchors { left: parent.left; top: parent.top; leftMargin: osd.u * 5; topMargin: osd.u * 13 }
                 text: "SP  " + Theme.timecode(mp.position)
                 font.family: Theme.pixel
                 font.pixelSize: osd.u * 5
@@ -867,6 +873,7 @@ Item {
             GradientStop { position: 0.0; color: "#FFFFFF" }
             GradientStop { position: 1.0; color: "#E9E1FF" }
         }
+        HoverHandler { id: controlsHover }
         Rectangle {
             visible: !player.fullscreen
             anchors { left: parent.left; right: parent.right; top: parent.top }
